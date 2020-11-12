@@ -1,25 +1,48 @@
-import logo from './logo.svg';
+import React, { Component } from 'react';
+
+import LoginPage from "./components/LoginPage";
+
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = { formResponse: {} };
+
+    this.updateFormResponse = this.updateFormResponse.bind(this);
+  }
+
+  updateFormResponse(formResponse) {
+    this.setState({ formResponse });
+  }
+
+  getFormattedFormResponse() {
+    const { formResponse } = this.state;
+
+    const keys = Object.keys(formResponse);
+
+    return keys.map(key => (
+      <>
+        <span>{key}: {formResponse[key].toString()}</span>
+        <br />
+      </>
+    ))
+  }
+
+  render() {
+    const formattedFormResponse = this.getFormattedFormResponse();
+
+    return (
+      <div className='app-container' >
+        <LoginPage onLoginSuccess={this.updateFormResponse} onLoginFail={this.updateFormResponse} />
+
+        <code>
+          {formattedFormResponse}
+        </code>
+      </div>
+    );
+  }
 }
 
 export default App;
